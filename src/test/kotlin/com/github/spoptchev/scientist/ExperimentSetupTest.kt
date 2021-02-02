@@ -1,9 +1,9 @@
 package com.github.spoptchev.scientist
 
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 class ExperimentSetupTest {
 
@@ -16,7 +16,7 @@ class ExperimentSetupTest {
                 .control("changed") { 1 }
                 .complete()
 
-        assertEquals("changed", experiment.control.name)
+        experiment.control.name.shouldBe("changed")
     }
 
     @Test
@@ -26,7 +26,7 @@ class ExperimentSetupTest {
                 .candidate { 3 }
                 .complete()
 
-        assertEquals(2, experiment.candidates.size)
+        experiment.candidates.size.shouldBe(2)
     }
 
     @Test
@@ -36,7 +36,7 @@ class ExperimentSetupTest {
                 .conductibleIf { false }
                 .complete()
 
-        assertEquals(false, experiment.conductible(context))
+        experiment.conductible(context).shouldBeFalse()
     }
 
     @Test
@@ -45,7 +45,7 @@ class ExperimentSetupTest {
                 .experiment { "some-experiment" }
                 .complete()
 
-        assertEquals("some-experiment", experiment.name)
+        experiment.name.shouldBe("some-experiment")
     }
 
     @Test
@@ -59,10 +59,10 @@ class ExperimentSetupTest {
         val e1 = NumberFormatException("")
         val e2 = NullPointerException("")
 
-        assertTrue(experiment.control.catches(e1))
-        assertTrue(experiment.candidates.all { it.catches(e1) })
-        assertFalse(experiment.control.catches(e2))
-        assertFalse(experiment.candidates.all { it.catches(e2) })
+        experiment.control.catches(e1).shouldBeTrue()
+        experiment.candidates.all { it.catches(e1) }.shouldBeTrue()
+        experiment.control.catches(e2).shouldBeFalse()
+        experiment.candidates.all { it.catches(e2) }.shouldBeFalse()
     }
 
 }

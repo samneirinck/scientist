@@ -77,10 +77,10 @@ class ScientistSetup<T, C> {
 
 }
 
-infix fun <T, C> Scientist<T, C>.conduct(setup: ExperimentSetup<T, C>.() -> ExperimentSetup<T, C>): T =
+suspend infix fun <T, C> Scientist<T, C>.conduct(setup: ExperimentSetup<T, C>.() -> ExperimentSetup<T, C>): T =
         this.evaluate(experiment(setup))
 
-infix fun <T, C> Scientist<T, C>.conduct(experiment: Experiment<T, C>): T = this.evaluate(experiment)
+suspend infix fun <T, C> Scientist<T, C>.conduct(experiment: Experiment<T, C>): T = this.evaluate(experiment)
 
 fun <T, C> experiment(setup: ExperimentSetup<T, C>.() -> ExperimentSetup<T, C>): Experiment<T, C>
         = setup(ExperimentSetup()).complete()
@@ -90,3 +90,7 @@ fun <T, C> scientist(setup: ScientistSetup<T, C>.() -> ScientistSetup<T, C>): Sc
 
 fun <T, C> scientist(): Scientist<T, C>
         = ScientistSetup<T, C>().complete()
+
+
+fun <T> scientist(setup: ExperimentSetup<T, Unit>.() -> ExperimentSetup<T, Unit>): Experiment<T, Unit>
+    = setup(ExperimentSetup()).complete()

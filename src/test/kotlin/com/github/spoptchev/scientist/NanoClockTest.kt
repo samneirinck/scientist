@@ -1,10 +1,10 @@
 package com.github.spoptchev.scientist
 
+import io.kotest.matchers.shouldBe
 import org.junit.Test
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
-import kotlin.test.assertEquals
 
 
 class NanoClockTest {
@@ -17,7 +17,7 @@ class NanoClockTest {
         val zone = ZoneId.of("Europe/Berlin")
         val result = nanoClock.withZone(zone)
 
-        assertEquals(zone, result.zone)
+        result.zone.shouldBe(zone)
     }
 
 }

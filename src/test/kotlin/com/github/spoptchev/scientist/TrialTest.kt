@@ -1,11 +1,15 @@
 package com.github.spoptchev.scientist
 
+import io.kotest.assertions.fail
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.comparables.shouldBeGreaterThan
+import io.kotest.matchers.comparables.shouldBeGreaterThanOrEqualTo
+import io.kotest.matchers.comparables.shouldBeLessThan
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.time.Duration
-import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
-import kotlin.test.assertTrue
-import kotlin.test.fail
 
 
 class TrialTest {
@@ -21,32 +25,32 @@ class TrialTest {
 
     @Test
     fun `test observe`() {
-        val observation = trial.run()
+        val observation = runBlocking { trial.run() }
 
         assert(observation.duration >= Duration.ofMillis(20))
-        assertEquals(observation.name, "test")
+        observation.name.shouldBe("test")
         assert(observation.startedAt < observation.stoppedAt)
     }
 
     @Test
     fun `test successful outcome`() {
-        val observation = trial.run()
+        val observation = runBlocking { trial.run() }
 
-        assertEquals(Success(true), observation.outcome)
+        observation.outcome.shouldBe(Success(true))
     }
 
     @Test
     fun `test failure outcome`() {
-        val observation = exceptionTrial.run()
+        val observation = runBlocking { exceptionTrial.run() }
 
-        assertTrue(observation.outcome.isFailure())
+        observation.outcome.isFailure().shouldBeTrue()
     }
 
     @Test(expected = NumberFormatException::class)
     fun `test throw exception when not caught`() {
         val trial = exceptionTrial.copy(catches = { e -> e is NullPointerException })
 
-        trial.run()
+        runBlocking { trial.run() }
 
         fail("expected to throw NumberFormatException")
     }
@@ -56,7 +60,7 @@ class TrialTest {
         val currentId = trial.id
         val newId = trial.refresh().id
 
-        assertNotEquals(currentId, newId)
+        newId.shouldNotBe(currentId)
     }
 
     @Test
@@ -65,8 +69,8 @@ class TrialTest {
         val trial2 = Trial(id = "A", name = "test") { }
         val trial3 = Trial(id = "A", name = "test") { }
 
-        assertTrue(trial1 > trial2)
-        assertTrue(trial2 >= trial3)
+        trial1.shouldBeGreaterThan(trial2)
+        trial2.shouldBeGreaterThanOrEqualTo(trial3)
     }
 
 }

@@ -4,7 +4,7 @@ import java.time.Clock
 import java.time.Instant
 import java.util.*
 
-typealias Behaviour<T> = () -> T
+typealias Behaviour<T> = suspend () -> T
 
 data class Trial<T>(
         val id: String = UUID.randomUUID().toString(),
@@ -13,7 +13,7 @@ data class Trial<T>(
         val behaviour: Behaviour<T>
 ): Comparable<Trial<T>> {
 
-    fun run(clock: Clock = NanoClock()): Observation<T> {
+    suspend fun run(clock: Clock = NanoClock()): Observation<T> {
         val start = Instant.now(clock)
 
         val outcome = try {

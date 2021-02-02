@@ -1,13 +1,13 @@
 package com.github.spoptchev.scientist
 
+import io.kotest.assertions.fail
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import org.junit.Test
 import java.time.Clock
 import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
-import kotlin.test.fail
 
 
 class ObservationTest {
@@ -34,14 +34,14 @@ class ObservationTest {
         val observation = baseObservation.copy(stoppedAt = startedAt.plusNanos(1))
         val expectedDuration = Duration.ofNanos(1)
 
-        assertEquals(expectedDuration, observation.duration)
+        observation.duration.shouldBe(expectedDuration)
     }
 
     @Test
     fun `test successful result`() {
         val observation = baseObservation.copy(outcome = Success(2))
 
-        assertEquals(2, observation.result)
+        observation.result.shouldBe(2)
     }
 
     @Test(expected = RuntimeException::class)
@@ -58,7 +58,7 @@ class ObservationTest {
         val observation1 = baseObservation.copy(outcome = Success(1))
         val observation2 = baseObservation.copy(outcome = Success(1))
 
-        assertTrue(observation1.matches(observation2, DefaultMatcher()))
+        observation1.matches(observation2, DefaultMatcher()).shouldBeTrue()
     }
 
     @Test
@@ -68,7 +68,7 @@ class ObservationTest {
         val observation1 = baseObservation.copy(outcome = Success(1))
         val observation2 = baseObservation.copy(outcome = Failure(RuntimeException("test")))
 
-        assertTrue(observation2.isIgnored(observation1, listOf(matcher)))
+        observation2.isIgnored(observation1, listOf(matcher)).shouldBeTrue()
     }
 
 }

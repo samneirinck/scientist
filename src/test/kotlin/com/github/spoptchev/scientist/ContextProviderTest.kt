@@ -1,7 +1,7 @@
 package com.github.spoptchev.scientist
 
+import io.kotest.matchers.shouldBe
 import org.junit.Test
-import kotlin.test.assertEquals
 
 
 class ContextProviderTest {
@@ -11,7 +11,7 @@ class ContextProviderTest {
         val contextProvider = NoContextProvider
         val result = contextProvider()
 
-        assertEquals(Unit, result)
+        result.shouldBe(Unit)
     }
 
     @Test(expected = NotImplementedError::class)

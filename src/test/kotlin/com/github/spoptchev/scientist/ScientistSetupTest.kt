@@ -1,9 +1,9 @@
 package com.github.spoptchev.scientist
 
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 
 class ScientistSetupTest {
@@ -17,7 +17,7 @@ class ScientistSetupTest {
                 .publisher(publisher)
                 .complete()
 
-        assertEquals(publisher, scientist.publish)
+        scientist.publish.shouldBe(publisher)
     }
 
     @Test
@@ -28,8 +28,8 @@ class ScientistSetupTest {
                 .ignore({ _: Outcome<Int>, _: Outcome<Int> -> true })
                 .complete()
 
-        assertEquals(ignore, scientist.ignores.first())
-        assertEquals(2, scientist.ignores.size)
+        scientist.ignores.first().shouldBe(ignore)
+        scientist.ignores.size.shouldBe(2)
     }
 
     @Test
@@ -39,7 +39,7 @@ class ScientistSetupTest {
                 .match(matcher)
                 .complete()
 
-        assertEquals(matcher, scientist.matcher)
+        scientist.matcher.shouldBe(matcher)
     }
 
     @Test
@@ -48,14 +48,14 @@ class ScientistSetupTest {
                 .context(NoContextProvider)
                 .complete()
 
-        assertEquals(NoContextProvider, scientist.contextProvider)
+        scientist.contextProvider.shouldBe(NoContextProvider)
     }
 
     @Test
     fun `test throw on mismatches not set`() {
         val scientist = setup.complete()
 
-        assertFalse(scientist.throwOnMismatches)
+        scientist.throwOnMismatches.shouldBeFalse()
     }
 
     @Test
@@ -64,7 +64,7 @@ class ScientistSetupTest {
                 .throwOnMismatches { true }
                 .complete()
 
-        assertTrue(scientist.throwOnMismatches)
+        scientist.throwOnMismatches.shouldBeTrue()
     }
 
 }

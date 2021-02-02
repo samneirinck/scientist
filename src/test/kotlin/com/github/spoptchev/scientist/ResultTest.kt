@@ -1,9 +1,9 @@
 package com.github.spoptchev.scientist
 
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
 import org.junit.Test
 import java.time.Instant
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 
 class ResultTest {
@@ -34,27 +34,27 @@ class ResultTest {
     fun `test matched`() {
         val result = baseResult.copy()
 
-        assertTrue(result.matched)
-        assertFalse(result.ignored)
-        assertFalse(result.mismatched)
+        result.matched.shouldBeTrue()
+        result.ignored.shouldBeFalse()
+        result.mismatched.shouldBeFalse()
     }
 
     @Test
     fun `test ignored`()  {
         val result = baseResult.copy(ignoredMismatches = listOf(baseObservation))
 
-        assertFalse(result.matched)
-        assertTrue(result.ignored)
-        assertFalse(result.mismatched)
+        result.matched.shouldBeFalse()
+        result.ignored.shouldBeTrue()
+        result.mismatched.shouldBeFalse()
     }
 
     @Test
     fun `test mismatched`()  {
         val result = baseResult.copy(mismatches = listOf(baseObservation))
 
-        assertFalse(result.matched)
-        assertFalse(result.ignored)
-        assertTrue(result.mismatched)
+        result.matched.shouldBeFalse()
+        result.ignored.shouldBeFalse()
+        result.mismatched.shouldBeTrue()
     }
 
 }

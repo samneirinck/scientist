@@ -8,7 +8,7 @@ data class Scientist<T, C>(
         val throwOnMismatches: Boolean = false
 ) {
 
-    fun evaluate(experiment: Experiment<T, C>): T {
+    suspend fun evaluate(experiment: Experiment<T, C>): T {
         val experimentState = experiment
                 .refresh()
                 .conduct(contextProvider)

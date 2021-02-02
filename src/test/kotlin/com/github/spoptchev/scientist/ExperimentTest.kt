@@ -1,9 +1,10 @@
 package com.github.spoptchev.scientist
 
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.types.shouldBeInstanceOf
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import kotlin.test.assertNotEquals
-import kotlin.test.assertTrue
-
 
 class ExperimentTest {
 
@@ -22,17 +23,17 @@ class ExperimentTest {
     @Test
     fun `should return a skipped experiment state when not conductible`() {
         val experiment = baseExperiment.copy(conductible = { false })
-        val state = experiment.conduct(contextProvider)
+        val state = runBlocking { experiment.conduct(contextProvider) }
 
-        assertTrue(state is Skipped)
+        (state is Skipped).shouldBeTrue()
     }
 
     @Test
     fun `should return a conducted experiment when its conductible`() {
         val experiment = baseExperiment.copy(conductible = { true })
-        val state = experiment.conduct(contextProvider)
+        val state = runBlocking { experiment.conduct(contextProvider) }
 
-        assertTrue(state is Conducted)
+        (state is Conducted).shouldBeTrue()
     }
 
     @Test
@@ -45,8 +46,8 @@ class ExperimentTest {
         val newControlId = refreshedExperiment.control.id
         val newCandidateIds = refreshedExperiment.candidates.map { it.id }
 
-        assertNotEquals(controlId, newControlId)
-        assertNotEquals(candidateIds, newCandidateIds)
+        newControlId.shouldNotBe(controlId)
+        newCandidateIds.shouldNotBe(candidateIds)
     }
 
 }

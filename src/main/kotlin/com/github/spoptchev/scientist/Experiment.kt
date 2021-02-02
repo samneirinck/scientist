@@ -1,7 +1,10 @@
 package com.github.spoptchev.scientist
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+
 interface Experiment<T, in C> {
-    fun conduct(contextProvider: ContextProvider<C>): ExperimentState<T>
+    suspend fun conduct(contextProvider: ContextProvider<C>): ExperimentState<T>
     fun refresh(): Experiment<T, C>
 }
 
@@ -16,13 +19,20 @@ data class DefaultExperiment<T, in C>(
         (candidates + control).sorted()
     }
 
-    override fun conduct(contextProvider: ContextProvider<C>): ExperimentState<T> {
+    override suspend fun conduct(contextProvider: ContextProvider<C>): ExperimentState<T> {
         return if (conductible(contextProvider)) {
-            val observations = shuffledTrials.map { it.run() }
-            val controlObservation = observations.first { it.id == control.id }
-            val candidateObservations = observations - controlObservation
+            coroutineScope {
+                val observations = shuffledTrials
+                    .map { async { it.run() } }
+                    .map { it.await() }
+
+                val controlObservation = observations.first { it.id == control.id }
+                val candidateObservations = observations - controlObservation
+
 
             Conducted(name, observations, controlObservation, candidateObservations)
+            }
+
         } else {
             Skipped(control.run())
         }

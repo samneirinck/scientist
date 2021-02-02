@@ -1,8 +1,8 @@
 package com.github.spoptchev.scientist
 
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
 import org.junit.Test
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 
 class OutcomeTest {
@@ -12,13 +12,13 @@ class OutcomeTest {
 
     @Test
     fun `test success`() {
-        assertTrue(success.isSuccess())
-        assertFalse(success.isFailure())
+        success.isSuccess().shouldBeTrue()
+        success.isFailure().shouldBeFalse()
     }
 
     @Test
     fun `test failure`() {
-        assertFalse(failure.isSuccess())
-        assertTrue(failure.isFailure())
+        failure.isSuccess().shouldBeFalse()
+        failure.isFailure().shouldBeTrue()
     }
 }
