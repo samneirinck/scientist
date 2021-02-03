@@ -1,6 +1,6 @@
 # Scientist 
 
-A kotlin library for carefully refactoring critical paths in your application. This is a fork of the original [Scientist](https://travis-ci.org/spoptchev/scientist), adding coroutine support.
+A kotlin library for carefully refactoring critical paths in your application. This is a fork of the original [Scientist](https://github.com/spoptchev/scientist), adding coroutine support.
 
 This library is inspired by the ruby gem [scientist](https://github.com/github/scientist).
 
