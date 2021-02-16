@@ -1,4 +1,4 @@
-package com.github.spoptchev.scientist
+package com.samneirinck.scientist
 
 import io.kotest.assertions.fail
 import io.kotest.matchers.booleans.shouldBeFalse
@@ -19,13 +19,13 @@ class ScientistTest {
         }
     }
 
-    private val contextProvider = NoContextProvider
+    private val contextProvider = com.samneirinck.scientist.NoContextProvider
     private val exception = RuntimeException("Test")
     private val controlTrial = Trial(name = "control-trial") { true }
     private val candidateTrial = Trial(name = "candidate-trial") { false }
     private val exceptionTrial = Trial<Boolean>(name = "candidate-exception") { throw exception }
 
-    private val baseExperiment = DefaultExperiment<Boolean, Unit>(
+    private val baseExperiment = com.samneirinck.scientist.DefaultExperiment<Boolean, Unit>(
         name = "test",
         control = controlTrial,
         candidates = listOf(candidateTrial, exceptionTrial)
@@ -64,7 +64,7 @@ class ScientistTest {
         publishedResult.matched.shouldBeFalse()
     }
 
-    @Test(expected = MismatchException::class)
+    @Test(expected = com.samneirinck.scientist.MismatchException::class)
     fun `test throw on mismatches`() {
         runBlocking {
             scientist

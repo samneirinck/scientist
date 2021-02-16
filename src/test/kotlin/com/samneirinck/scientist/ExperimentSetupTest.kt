@@ -1,4 +1,4 @@
-package com.github.spoptchev.scientist
+package com.samneirinck.scientist
 
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -31,7 +31,7 @@ class ExperimentSetupTest {
 
     @Test
     fun `test change conductible`() {
-        val context = NoContextProvider
+        val context = com.samneirinck.scientist.NoContextProvider
         val experiment = setup
                 .conductibleIf { false }
                 .complete()

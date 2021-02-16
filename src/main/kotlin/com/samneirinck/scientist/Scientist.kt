@@ -1,21 +1,21 @@
-package com.github.spoptchev.scientist
+package com.samneirinck.scientist
 
 data class Scientist<T, C>(
-        val contextProvider: ContextProvider<C>,
-        val publish: Publisher<T, C> = NoPublisher(),
-        val ignores: List<Matcher<T>> = emptyList(),
-        val matcher: Matcher<T> = DefaultMatcher(),
-        val throwOnMismatches: Boolean = false
+    val contextProvider: com.samneirinck.scientist.ContextProvider<C>,
+    val publish: Publisher<T, C> = NoPublisher(),
+    val ignores: List<com.samneirinck.scientist.Matcher<T>> = emptyList(),
+    val matcher: com.samneirinck.scientist.Matcher<T> = com.samneirinck.scientist.DefaultMatcher(),
+    val throwOnMismatches: Boolean = false
 ) {
 
-    suspend fun evaluate(experiment: Experiment<T, C>): T {
+    suspend fun evaluate(experiment: com.samneirinck.scientist.Experiment<T, C>): T {
         val experimentState = experiment
                 .refresh()
                 .conduct(contextProvider)
 
         return when(experimentState) {
-            is Skipped -> experimentState.observation.result
-            is Conducted -> {
+            is com.samneirinck.scientist.Skipped -> experimentState.observation.result
+            is com.samneirinck.scientist.Conducted -> {
                 val (experimentName, observations, controlObservation, candidateObservations) = experimentState
 
                 val allMismatches = candidateObservations.filterNot { it.matches(controlObservation, matcher) }
@@ -35,7 +35,7 @@ data class Scientist<T, C>(
                 publish(result)
 
                 if (throwOnMismatches && result.mismatched) {
-                    throw MismatchException(experimentName)
+                    throw com.samneirinck.scientist.MismatchException(experimentName)
                 }
 
                 controlObservation.result

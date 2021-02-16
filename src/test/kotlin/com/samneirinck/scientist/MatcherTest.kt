@@ -1,4 +1,4 @@
-package com.github.spoptchev.scientist
+package com.samneirinck.scientist
 
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -11,7 +11,7 @@ class MatcherTest {
     private val success2 = Success(false)
     private val failure1 = Failure<Boolean>(RuntimeException("failure1"))
     private val failure2 = Failure<Boolean>(RuntimeException("failure2"))
-    private val match = DefaultMatcher<Boolean>()
+    private val match = com.samneirinck.scientist.DefaultMatcher<Boolean>()
 
     @Test
     fun `test when both success and same value`() {

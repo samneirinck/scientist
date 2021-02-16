@@ -1,4 +1,4 @@
-package com.github.spoptchev.scientist
+package com.samneirinck.scientist
 
 typealias Publisher<T, C> = (Result<T, C>) -> Unit
 

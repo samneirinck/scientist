@@ -1,4 +1,4 @@
-package com.github.spoptchev.scientist
+package com.samneirinck.scientist
 
 import io.kotest.matchers.shouldBe
 import org.junit.Test
@@ -13,7 +13,7 @@ class NanoClockTest {
 
     @Test
     fun `test withZone`() {
-        val nanoClock = NanoClock(fixedClock)
+        val nanoClock = com.samneirinck.scientist.NanoClock(fixedClock)
         val zone = ZoneId.of("Europe/Berlin")
         val result = nanoClock.withZone(zone)
 

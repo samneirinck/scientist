@@ -1,4 +1,4 @@
-package com.github.spoptchev.scientist
+package com.samneirinck.scientist
 
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldNotBe
@@ -10,14 +10,14 @@ class ExperimentTest {
 
     private val controlTrial = Trial(name = "control-trial") { true }
     private val candidateTrial = Trial(name = "candidate-trial") { false }
-    private val contextProvider = object : ContextProvider<Unit> {
+    private val contextProvider = object : com.samneirinck.scientist.ContextProvider<Unit> {
         override fun invoke() = Unit
     }
 
-    private val baseExperiment = DefaultExperiment<Boolean, Unit>(
-            name = "test",
-            control = controlTrial,
-            candidates = listOf(candidateTrial)
+    private val baseExperiment = com.samneirinck.scientist.DefaultExperiment<Boolean, Unit>(
+        name = "test",
+        control = controlTrial,
+        candidates = listOf(candidateTrial)
     )
 
     @Test
@@ -25,7 +25,7 @@ class ExperimentTest {
         val experiment = baseExperiment.copy(conductible = { false })
         val state = runBlocking { experiment.conduct(contextProvider) }
 
-        (state is Skipped).shouldBeTrue()
+        (state is com.samneirinck.scientist.Skipped).shouldBeTrue()
     }
 
     @Test
@@ -33,7 +33,7 @@ class ExperimentTest {
         val experiment = baseExperiment.copy(conductible = { true })
         val state = runBlocking { experiment.conduct(contextProvider) }
 
-        (state is Conducted).shouldBeTrue()
+        (state is com.samneirinck.scientist.Conducted).shouldBeTrue()
     }
 
     @Test
@@ -41,7 +41,7 @@ class ExperimentTest {
         val controlId = baseExperiment.control.id
         val candidateIds = baseExperiment.candidates.map { it.id }
 
-        val refreshedExperiment = baseExperiment.refresh() as DefaultExperiment
+        val refreshedExperiment = baseExperiment.refresh() as com.samneirinck.scientist.DefaultExperiment
 
         val newControlId = refreshedExperiment.control.id
         val newCandidateIds = refreshedExperiment.candidates.map { it.id }

@@ -1,4 +1,4 @@
-package com.github.spoptchev.scientist
+package com.samneirinck.scientist
 
 import io.kotest.assertions.fail
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -17,15 +17,15 @@ class ObservationTest {
     private val outcome = Success(value)
     private val startedAt = Instant.now(fixedClock)
 
-    private val baseObservation = Observation(
-            id = "test",
-            name = "test",
-            outcome = outcome,
-            startedAt = startedAt,
-            stoppedAt = startedAt
+    private val baseObservation = com.samneirinck.scientist.Observation(
+        id = "test",
+        name = "test",
+        outcome = outcome,
+        startedAt = startedAt,
+        stoppedAt = startedAt
     )
 
-    class IgnoreCandidateFailures : Matcher<Int> {
+    class IgnoreCandidateFailures : com.samneirinck.scientist.Matcher<Int> {
         override fun invoke(candidate: Outcome<Int>, control: Outcome<Int>) = candidate.isFailure()
     }
 
@@ -58,7 +58,7 @@ class ObservationTest {
         val observation1 = baseObservation.copy(outcome = Success(1))
         val observation2 = baseObservation.copy(outcome = Success(1))
 
-        observation1.matches(observation2, DefaultMatcher()).shouldBeTrue()
+        observation1.matches(observation2, com.samneirinck.scientist.DefaultMatcher()).shouldBeTrue()
     }
 
     @Test

@@ -1,5 +1,5 @@
 @file:JvmName("TrialOutcome")
-package com.github.spoptchev.scientist
+package com.samneirinck.scientist
 
 sealed class Outcome<out T>
 data class Success<out T>(val value: T) : Outcome<T>()

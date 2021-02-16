@@ -1,4 +1,4 @@
-package com.github.spoptchev.scientist
+package com.samneirinck.scientist
 
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -45,10 +45,10 @@ class ScientistSetupTest {
     @Test
     fun `test context provider`() {
         val scientist = setup
-                .context(NoContextProvider)
+                .context(com.samneirinck.scientist.NoContextProvider)
                 .complete()
 
-        scientist.contextProvider.shouldBe(NoContextProvider)
+        scientist.contextProvider.shouldBe(com.samneirinck.scientist.NoContextProvider)
     }
 
     @Test

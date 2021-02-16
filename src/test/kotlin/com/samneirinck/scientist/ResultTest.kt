@@ -1,4 +1,4 @@
-package com.github.spoptchev.scientist
+package com.samneirinck.scientist
 
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -8,16 +8,16 @@ import java.time.Instant
 
 class ResultTest {
 
-    private val contextProvider = object : ContextProvider<Unit> {
+    private val contextProvider = object : com.samneirinck.scientist.ContextProvider<Unit> {
         override fun invoke() = Unit
     }
 
-    private val baseObservation = Observation(
-            id = "base-id",
-            name = "base-test",
-            outcome = Success(true),
-            startedAt = Instant.now(),
-            stoppedAt = Instant.now()
+    private val baseObservation = com.samneirinck.scientist.Observation(
+        id = "base-id",
+        name = "base-test",
+        outcome = Success(true),
+        startedAt = Instant.now(),
+        stoppedAt = Instant.now()
     )
 
     private val baseResult = Result(

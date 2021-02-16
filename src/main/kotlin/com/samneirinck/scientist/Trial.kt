@@ -1,4 +1,4 @@
-package com.github.spoptchev.scientist
+package com.samneirinck.scientist
 
 import java.time.Clock
 import java.time.Instant
@@ -13,7 +13,7 @@ data class Trial<T>(
         val behaviour: Behaviour<T>
 ): Comparable<Trial<T>> {
 
-    suspend fun run(clock: Clock = NanoClock()): Observation<T> {
+    suspend fun run(clock: Clock = com.samneirinck.scientist.NanoClock()): com.samneirinck.scientist.Observation<T> {
         val start = Instant.now(clock)
 
         val outcome = try {
@@ -24,7 +24,7 @@ data class Trial<T>(
 
         val stop = Instant.now(clock)
 
-        return Observation(id, name, outcome, start, stop)
+        return com.samneirinck.scientist.Observation(id, name, outcome, start, stop)
     }
 
     fun refresh() = copy(id = UUID.randomUUID().toString())

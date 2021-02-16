@@ -1,4 +1,4 @@
-package com.github.spoptchev.scientist
+package com.samneirinck.scientist
 
 import io.kotest.assertions.fail
 import io.kotest.matchers.booleans.shouldBeTrue
