@@ -1,4 +1,4 @@
-# Scientist 
+# Scientist
 
 A kotlin library for carefully refactoring critical paths in your application. This is a fork of the original [Scientist](https://github.com/spoptchev/scientist), adding coroutine support.
 
@@ -198,42 +198,21 @@ val result = scientist<Double, Unit> {
 }
 ```
 
-### Java interop
-
-The Java interoperability can certainly be improved but should be sufficient for now:
-
-```java
-public boolean isAllowed(User user) {
-    Scientist<Boolean, String> scientist = Setup.scientist(setup -> setup
-            .context(() -> "execute")
-    );
-
-    Experiment<Boolean, String> experiment = Setup.experiment(setup -> setup
-            .name(() -> "experiment-name")
-            .control("test-control", () -> user.isAllowedOldWay())
-            .candidate("test-candidate", () -> user.isAllowedNewWay())
-            .conductibleIf((contextProvider) -> contextProvider.invoke().equals("execute"))
-    );
-
-    return scientist.evaluate(experiment);
-}
-```
-
 ### Installation
 
 Maven:
 
 ```
 <dependency>
-  <groupId>com.github.spoptchev</groupId>
+  <groupId>com.samneirinck</groupId>
   <artifactId>scientist</artifactId>
-  <version>1.0.2</version>
+  <version>0.0.1</version>
 </dependency>
 ```
 
 Gradle:
 
 ```
-compile 'com.github.spoptchev:scientist:1.0.2'
+implementation 'com.samneirinck:scientist:0.0.1'
 ```
 
