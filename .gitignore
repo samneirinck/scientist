@@ -8,4 +8,4 @@ out/
 *.ipr
 *.iws
 local.properties
-gradle.properties
+
