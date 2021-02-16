@@ -1,123 +1,36 @@
 buildscript {
-    ext.kotlin_version = '1.4.21'
-    ext.junit_platform_version = '5.5.1'
-
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
+    ext.versions = [
+            'kotlin'    : '1.4.21',
+            'coroutines': '1.4.2',
+            'junit'     : '5.5.1',
+            'kotest'    : '4.4.0'
+    ]
 }
 
 plugins {
-    id 'net.researchgate.release' version '2.8.1'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.21'
+    id "com.vanniktech.maven.publish" version '0.13.0'
+    id "org.jetbrains.dokka" version '1.4.20'
 }
-
-group 'com.github.spoptchev'
-
-apply plugin: 'kotlin'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
 
     testCompile "junit:junit:4.12"
-    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$junit_platform_version"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$junit_platform_version"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit_platform_version"
-    testCompile "io.kotest:kotest-runner-junit5:4.4.0"
-    testCompile "io.kotest:kotest-assertions-core:4.4.0"
-
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:${versions.junit}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${versions.junit}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${versions.junit}"
+    testCompile "io.kotest:kotest-runner-junit5:${versions.kotest}"
+    testCompile "io.kotest:kotest-assertions-core:${versions.kotest}"
 }
 
-release {
-    failOnUpdateNeeded = false
-}
-
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives javadocJar, sourcesJar
-}
-
-build {
-    afterReleaseBuild.dependsOn uploadArchives
-}
-
-//uploadArchives {
-//    repositories {
-//        mavenDeployer {
-//            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-//
-//            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-//                authentication(userName: System.getenv('OSSRH_USERNAME'), password: System.getenv('OSSRH_PASSWORD'))
-//            }
-//
-//            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-//                authentication(userName: System.getenv('OSSRH_USERNAME'), password: System.getenv('OSSRH_PASSWORD'))
-//            }
-//
-//            pom.project {
-//                name 'Scientist'
-//                packaging 'jar'
-//                description 'Scientist'
-//                url 'http://www.github.com/samneirinck/scientist'
-//
-//                scm {
-//                    connection 'scm:git:http://www.github.com/samneirinck/scientist'
-//                    developerConnection 'scm:git:http://github.com/samneirinck'
-//                    url 'http://www.github.com/samneirinck/scientist'
-//                }
-//
-//                licenses {
-//                    license {
-//                        name 'The MIT License'
-//                        url 'https://opensource.org/licenses/MIT'
-//                    }
-//                }
-//
-//                developers {
-//                    developer {
-//                        id 'spoptchev'
-//                        name 'Spas Poptchev'
-//                        email 'spas.poptchev@gmail.com'
-//                    }
-//                    developer {
-//                        id 'samneirinck'
-//                        name 'Sam Neirinck'
-//                        email 'github@samneirinck.com'
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-
-
-test {
-    useJUnitPlatform()
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-wrapper {
-    gradleVersion "5.2.1"
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
