@@ -12,10 +12,10 @@ class ScientistSetupTest {
 
     @Test
     fun `test change publisher`() {
-        val publisher = { _ : Result<Int, Unit> -> }
+        val publisher = { _: Result<Int, Unit> -> }
         val scientist = setup
-                .publisher(publisher)
-                .complete()
+            .publisher(publisher)
+            .complete()
 
         scientist.publish.shouldBe(publisher)
     }
@@ -24,9 +24,9 @@ class ScientistSetupTest {
     fun `test add ignore`() {
         val ignore = { _: Outcome<Int>, _: Outcome<Int> -> false }
         val scientist = setup
-                .ignore(ignore)
-                .ignore({ _: Outcome<Int>, _: Outcome<Int> -> true })
-                .complete()
+            .ignore(ignore)
+            .ignore { _: Outcome<Int>, _: Outcome<Int> -> true }
+            .complete()
 
         scientist.ignores.first().shouldBe(ignore)
         scientist.ignores.size.shouldBe(2)
@@ -36,8 +36,8 @@ class ScientistSetupTest {
     fun `test change matcher`() {
         val matcher = { _: Outcome<Int>, _: Outcome<Int> -> false }
         val scientist = setup
-                .match(matcher)
-                .complete()
+            .match(matcher)
+            .complete()
 
         scientist.matcher.shouldBe(matcher)
     }
@@ -45,10 +45,10 @@ class ScientistSetupTest {
     @Test
     fun `test context provider`() {
         val scientist = setup
-                .context(com.samneirinck.scientist.NoContextProvider)
-                .complete()
+            .context(NoContextProvider)
+            .complete()
 
-        scientist.contextProvider.shouldBe(com.samneirinck.scientist.NoContextProvider)
+        scientist.contextProvider.shouldBe(NoContextProvider)
     }
 
     @Test
@@ -61,8 +61,8 @@ class ScientistSetupTest {
     @Test
     fun `test throw on mismatches`() {
         val scientist = setup
-                .throwOnMismatches { true }
-                .complete()
+            .throwOnMismatches { true }
+            .complete()
 
         scientist.throwOnMismatches.shouldBeTrue()
     }

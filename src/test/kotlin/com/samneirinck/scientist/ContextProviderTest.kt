@@ -8,7 +8,7 @@ class ContextProviderTest {
 
     @Test
     fun `test no context provider`() {
-        val contextProvider = com.samneirinck.scientist.NoContextProvider
+        val contextProvider = NoContextProvider
         val result = contextProvider()
 
         result.shouldBe(Unit)
@@ -16,9 +16,8 @@ class ContextProviderTest {
 
     @Test(expected = NotImplementedError::class)
     fun `test not implemented context provider`() {
-        val contextProvider = com.samneirinck.scientist.NotImplementedContextProvider<Boolean>()
+        val contextProvider = NotImplementedContextProvider<Boolean>()
 
         contextProvider()
     }
-
 }

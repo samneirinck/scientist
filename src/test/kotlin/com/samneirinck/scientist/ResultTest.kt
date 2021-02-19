@@ -8,11 +8,11 @@ import java.time.Instant
 
 class ResultTest {
 
-    private val contextProvider = object : com.samneirinck.scientist.ContextProvider<Unit> {
+    private val contextProvider = object : ContextProvider<Unit> {
         override fun invoke() = Unit
     }
 
-    private val baseObservation = com.samneirinck.scientist.Observation(
+    private val baseObservation = Observation(
         id = "base-id",
         name = "base-test",
         outcome = Success(true),
@@ -21,13 +21,13 @@ class ResultTest {
     )
 
     private val baseResult = Result(
-            experimentName = "test",
-            observations = emptyList(),
-            controlObservation = baseObservation.copy(id = "control-id", name = "control-test"),
-            candidateObservations = listOf(baseObservation.copy(id = "candidate-id", name = "candidate-test")),
-            mismatches = emptyList(),
-            ignoredMismatches = emptyList(),
-            contextProvider = contextProvider
+        experimentName = "test",
+        observations = emptyList(),
+        controlObservation = baseObservation.copy(id = "control-id", name = "control-test"),
+        candidateObservations = listOf(baseObservation.copy(id = "candidate-id", name = "candidate-test")),
+        mismatches = emptyList(),
+        ignoredMismatches = emptyList(),
+        contextProvider = contextProvider
     )
 
     @Test
@@ -40,7 +40,7 @@ class ResultTest {
     }
 
     @Test
-    fun `test ignored`()  {
+    fun `test ignored`() {
         val result = baseResult.copy(ignoredMismatches = listOf(baseObservation))
 
         result.matched.shouldBeFalse()
@@ -49,7 +49,7 @@ class ResultTest {
     }
 
     @Test
-    fun `test mismatched`()  {
+    fun `test mismatched`() {
         val result = baseResult.copy(mismatches = listOf(baseObservation))
 
         result.matched.shouldBeFalse()

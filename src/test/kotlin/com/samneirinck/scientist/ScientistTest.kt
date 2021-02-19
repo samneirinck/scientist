@@ -19,13 +19,13 @@ class ScientistTest {
         }
     }
 
-    private val contextProvider = com.samneirinck.scientist.NoContextProvider
+    private val contextProvider = NoContextProvider
     private val exception = RuntimeException("Test")
     private val controlTrial = Trial(name = "control-trial") { true }
     private val candidateTrial = Trial(name = "candidate-trial") { false }
     private val exceptionTrial = Trial<Boolean>(name = "candidate-exception") { throw exception }
 
-    private val baseExperiment = com.samneirinck.scientist.DefaultExperiment<Boolean, Unit>(
+    private val baseExperiment = DefaultExperiment<Boolean, Unit>(
         name = "test",
         control = controlTrial,
         candidates = listOf(candidateTrial, exceptionTrial)
@@ -64,7 +64,7 @@ class ScientistTest {
         publishedResult.matched.shouldBeFalse()
     }
 
-    @Test(expected = com.samneirinck.scientist.MismatchException::class)
+    @Test(expected = MismatchException::class)
     fun `test throw on mismatches`() {
         runBlocking {
             scientist
@@ -96,7 +96,7 @@ class ScientistTest {
             .conduct {
                 control { control() }
                 candidate(name = "slow") { slowCandidate() }
-                candidate(name = "faulty" ) { faultyCandidate() }
+                candidate(name = "faulty") { faultyCandidate() }
             }
 
         result.shouldBe(true)

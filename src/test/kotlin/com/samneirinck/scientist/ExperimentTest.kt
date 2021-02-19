@@ -2,7 +2,6 @@ package com.samneirinck.scientist
 
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldNotBe
-import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
@@ -10,11 +9,11 @@ class ExperimentTest {
 
     private val controlTrial = Trial(name = "control-trial") { true }
     private val candidateTrial = Trial(name = "candidate-trial") { false }
-    private val contextProvider = object : com.samneirinck.scientist.ContextProvider<Unit> {
+    private val contextProvider = object : ContextProvider<Unit> {
         override fun invoke() = Unit
     }
 
-    private val baseExperiment = com.samneirinck.scientist.DefaultExperiment<Boolean, Unit>(
+    private val baseExperiment = DefaultExperiment<Boolean, Unit>(
         name = "test",
         control = controlTrial,
         candidates = listOf(candidateTrial)
@@ -25,7 +24,7 @@ class ExperimentTest {
         val experiment = baseExperiment.copy(conductible = { false })
         val state = runBlocking { experiment.conduct(contextProvider) }
 
-        (state is com.samneirinck.scientist.Skipped).shouldBeTrue()
+        (state is Skipped).shouldBeTrue()
     }
 
     @Test
@@ -33,7 +32,7 @@ class ExperimentTest {
         val experiment = baseExperiment.copy(conductible = { true })
         val state = runBlocking { experiment.conduct(contextProvider) }
 
-        (state is com.samneirinck.scientist.Conducted).shouldBeTrue()
+        (state is Conducted).shouldBeTrue()
     }
 
     @Test
@@ -41,7 +40,7 @@ class ExperimentTest {
         val controlId = baseExperiment.control.id
         val candidateIds = baseExperiment.candidates.map { it.id }
 
-        val refreshedExperiment = baseExperiment.refresh() as com.samneirinck.scientist.DefaultExperiment
+        val refreshedExperiment = baseExperiment.refresh() as DefaultExperiment
 
         val newControlId = refreshedExperiment.control.id
         val newCandidateIds = refreshedExperiment.candidates.map { it.id }
@@ -49,5 +48,4 @@ class ExperimentTest {
         newControlId.shouldNotBe(controlId)
         newCandidateIds.shouldNotBe(candidateIds)
     }
-
 }

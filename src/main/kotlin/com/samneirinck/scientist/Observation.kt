@@ -6,7 +6,7 @@ import java.time.Instant
 data class Observation<T>(
     val id: String,
     val name: String,
-    val outcome: com.samneirinck.scientist.Outcome<T>,
+    val outcome: Outcome<T>,
     val startedAt: Instant,
     val stoppedAt: Instant
 ) {
@@ -16,14 +16,14 @@ data class Observation<T>(
     }
 
     val result: T by lazy {
-        when(outcome) {
-            is com.samneirinck.scientist.Success<T> -> outcome.value
-            is com.samneirinck.scientist.Failure<T> -> throw outcome.throwable
+        when (outcome) {
+            is Success<T> -> outcome.value
+            is Failure<T> -> throw outcome.throwable
         }
     }
 
-    fun matches(other: com.samneirinck.scientist.Observation<T>, match: com.samneirinck.scientist.Matcher<T>) = match(outcome, other.outcome)
+    fun matches(other: Observation<T>, match: Matcher<T>) = match(outcome, other.outcome)
 
-    fun isIgnored(other: com.samneirinck.scientist.Observation<T>, ignores: List<com.samneirinck.scientist.Matcher<T>>) = ignores.any { it(outcome, other.outcome) }
+    fun isIgnored(other: Observation<T>, ignores: List<Matcher<T>>) = ignores.any { it(outcome, other.outcome) }
 
 }

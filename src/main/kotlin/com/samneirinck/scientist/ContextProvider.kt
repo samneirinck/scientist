@@ -2,10 +2,10 @@ package com.samneirinck.scientist
 
 typealias ContextProvider<C> = () -> C
 
-object NoContextProvider : com.samneirinck.scientist.ContextProvider<Unit> {
+object NoContextProvider : ContextProvider<Unit> {
     override fun invoke() {}
 }
 
-class NotImplementedContextProvider<out C> : com.samneirinck.scientist.ContextProvider<C> {
+class NotImplementedContextProvider<out C> : ContextProvider<C> {
     override fun invoke(): C = TODO("not implemented")
 }

@@ -31,7 +31,7 @@ class ExperimentSetupTest {
 
     @Test
     fun `test change conductible`() {
-        val context = com.samneirinck.scientist.NoContextProvider
+        val context = NoContextProvider
         val experiment = setup
                 .conductibleIf { false }
                 .complete()
@@ -64,5 +64,4 @@ class ExperimentSetupTest {
         experiment.control.catches(e2).shouldBeFalse()
         experiment.candidates.all { it.catches(e2) }.shouldBeFalse()
     }
-
 }

@@ -17,7 +17,7 @@ class ObservationTest {
     private val outcome = Success(value)
     private val startedAt = Instant.now(fixedClock)
 
-    private val baseObservation = com.samneirinck.scientist.Observation(
+    private val baseObservation = Observation(
         id = "test",
         name = "test",
         outcome = outcome,
@@ -25,7 +25,7 @@ class ObservationTest {
         stoppedAt = startedAt
     )
 
-    class IgnoreCandidateFailures : com.samneirinck.scientist.Matcher<Int> {
+    class IgnoreCandidateFailures : Matcher<Int> {
         override fun invoke(candidate: Outcome<Int>, control: Outcome<Int>) = candidate.isFailure()
     }
 
@@ -58,7 +58,7 @@ class ObservationTest {
         val observation1 = baseObservation.copy(outcome = Success(1))
         val observation2 = baseObservation.copy(outcome = Success(1))
 
-        observation1.matches(observation2, com.samneirinck.scientist.DefaultMatcher()).shouldBeTrue()
+        observation1.matches(observation2, DefaultMatcher()).shouldBeTrue()
     }
 
     @Test

@@ -11,7 +11,7 @@ class MatcherTest {
     private val success2 = Success(false)
     private val failure1 = Failure<Boolean>(RuntimeException("failure1"))
     private val failure2 = Failure<Boolean>(RuntimeException("failure2"))
-    private val match = com.samneirinck.scientist.DefaultMatcher<Boolean>()
+    private val match = DefaultMatcher<Boolean>()
 
     @Test
     fun `test when both success and same value`() {

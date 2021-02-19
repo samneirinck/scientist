@@ -13,7 +13,7 @@ class NanoClockTest {
 
     @Test
     fun `test withZone`() {
-        val nanoClock = com.samneirinck.scientist.NanoClock(fixedClock)
+        val nanoClock = NanoClock(fixedClock)
         val zone = ZoneId.of("Europe/Berlin")
         val result = nanoClock.withZone(zone)
 

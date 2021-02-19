@@ -7,13 +7,13 @@ import java.util.*
 typealias Behaviour<T> = suspend () -> T
 
 data class Trial<T>(
-        val id: String = UUID.randomUUID().toString(),
-        val name: String,
-        val catches: (Throwable) -> Boolean = { true },
-        val behaviour: Behaviour<T>
-): Comparable<Trial<T>> {
+    val id: String = UUID.randomUUID().toString(),
+    val name: String,
+    val catches: (Throwable) -> Boolean = { true },
+    val behaviour: Behaviour<T>
+) : Comparable<Trial<T>> {
 
-    suspend fun run(clock: Clock = com.samneirinck.scientist.NanoClock()): com.samneirinck.scientist.Observation<T> {
+    suspend fun run(clock: Clock = NanoClock()): Observation<T> {
         val start = Instant.now(clock)
 
         val outcome = try {
@@ -24,11 +24,10 @@ data class Trial<T>(
 
         val stop = Instant.now(clock)
 
-        return com.samneirinck.scientist.Observation(id, name, outcome, start, stop)
+        return Observation(id, name, outcome, start, stop)
     }
 
     fun refresh() = copy(id = UUID.randomUUID().toString())
 
     override fun compareTo(other: Trial<T>): Int = id.compareTo(other.id)
-
 }
