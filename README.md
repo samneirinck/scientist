@@ -10,7 +10,7 @@ Let's pretend you're changing the way you handle permissions in a large web app.
 
 
 ```kotlin
-fun isAllowed(user: User): Boolean = scientist<Boolean, Unit>() conduct {
+suspend fun isAllowed(user: User): Boolean = scientist<Boolean, Unit>() conduct {
     experiment { "widget-permissions" }
     control { user.isAllowedOldWay() }
     candidate { user.isAllowedNewWay() }
@@ -19,8 +19,8 @@ fun isAllowed(user: User): Boolean = scientist<Boolean, Unit>() conduct {
 
 Wrap a `control` lambda around the code's original behavior, and wrap `candidate` around the new behavior. When conducting the experiment `conduct` will always return whatever the `control` lambda returns, but it does a bunch of stuff behind the scenes:
 
-* It decides whether or not to run the `candidate` lambda,
-* Randomizes the order in which `control` and `candidate` lambdas are run,
+* It decides whether to run the `candidate` lambda,
+* Runs the `control` and `candidate` lambdas in parallel,
 * Measures the durations of all behaviors,
 * Compares the result of `candidate` to the result of `control`,
 * Swallows (but records) any exceptions thrown in the `candidate` lambda, and
@@ -59,7 +59,7 @@ You can also extend the publisher `typealias` which then can be used as a parame
 ```kotlin
 val logger = loggerFactory.call()
 
-class LoggingPublisher(val logger: Logger) : Publisher<Boolean, Unit> {
+class LoggingPublisher(private val logger: Logger) : Publisher<Boolean, Unit> {
     override fun invoke(result: Result<Boolean, Unit>) {
         logger.info(result)
     }
@@ -144,8 +144,8 @@ Scientist will throw a `MismatchException` exception if any observations don't m
 With an experiment you are setting up tests for the critical paths of your application by specifying a `control` and `candidate` lambda.
 
 ```kotlin
-fun experiment = experiment<Boolean, Unit> {
-    name { "widget-permissions" }
+fun experiment() = experiment<Boolean, Unit> {
+    name = "widget-permissions"
     control { user.isAllowedOldWay() }
     candidate { user.isAllowedNewWay() }
 }

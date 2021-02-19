@@ -4,9 +4,9 @@ import kotlin.properties.Delegates
 
 class ExperimentSetup<T, C> {
 
-    private var name: String = "default-experiment"
+    var name: String = "default-experiment"
     private var control: Trial<T> by Delegates.notNull()
-    private var candidates: List<Trial<T>> = mutableListOf()
+    private val candidates: MutableList<Trial<T>> = mutableListOf()
     private var conductible: (ContextProvider<C>) -> Boolean = { true }
     private var catches: (Throwable) -> Boolean = { true }
 
